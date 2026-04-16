@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angry Birds Bricks</title>
+    <link rel="icon" type="image/x-icon" href="assets/angry-birds.png">
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="welcome-screen">
+        <div class="welcome-box">
+            <div class="welcome-logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/528/528076.png" alt="bird" class="logo-bird">
+                <h1 class="welcome-title">Angry Birds Bricks</h1>
+                <img src="https://cdn-icons-png.flaticon.com/512/528/528076.png" alt="bird" class="logo-bird flip">
+            </div>
+            <svg class="info-icon" onclick="showAuthorInfo()" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                    d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+            <div class="welcome-sections">
+
+                <div class="welcome-card">
+                    <h2 class="card-title">🎮 How to Play</h2>
+                    <ul class="instructions-list">
+                        <li>⬅ ➡ Arrow keys move the paddle</li>
+                        <li>Bounce the bird to destroy all pigs</li>
+                        <li>Don't let the bird fall off the bottom!</li>
+                        <li><b>Collect coins dropped by pigs to earn gold</b></li>
+                    </ul>
+                </div>
+
+                <div class="welcome-card">
+                    <h2 class="card-title">🐷 Pig Legend</h2>
+                    <div class="pig-legend">
+                        <div class="pig-entry">
+                            <img src="assets/pigs.png" class="pig-img-sm"> <span>❤️ 1x</span>
+                            <span class="pig-label">Normal Pig<br><small>1 hit</small></span>
+                        </div>
+                        <div class="pig-entry">
+                            <img src="assets/pigs.png" class="pig-img-sm"
+                                style="filter: brightness(0.45) sepia(1) hue-rotate(100deg);"> <span>❤️ 2x</span>
+                            <span class="pig-label">Strong Pig<br><small>2 hits</small></span>
+                        </div>
+                        <div class="pig-entry">
+                            <img src="assets/pigs.png" class="pig-img-sm"
+                                style="filter: hue-rotate(250deg) saturate(2.5) brightness(1.1);"> <span>❤️ 3x</span>
+                            <span class="pig-label">Boss Pig<br><small>3 hits</small></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="welcome-card">
+                    <h2 class="card-title">🛒 Upgrade Shop</h2>
+                    <div class="shop-info">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🔥</span>
+                            <div>
+                                <strong>Fireball</strong> — <span class="gold-cost">30 Gold</span><br>
+                                <small>Bird burns through 5 pigs without bouncing</small>
+                            </div>
+                        </div>
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🪞</span>
+                            <div>
+                                <strong>Mirror</strong> — <span class="gold-cost">100 Gold</span><br>
+                                <small>Adds a second paddle at the top</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="welcome-card">
+                    <h2 class="card-title">⚡ Choose Difficulty</h2>
+                    <div class="difficulty-buttons">
+                        <button onclick="setDifficulty('easy')" class="btn btn-easy">🟢 Easy</button>
+                        <button onclick="setDifficulty('medium')" class="btn btn-medium">🟡 Medium</button>
+                        <button onclick="setDifficulty('hard')" class="btn btn-hard">🔴 Hard</button>
+                    </div>
+                    <p id="diff-chosen" class="diff-chosen-text"></p>
+                </div>
+
+            </div>
+
+            <button id="welcome-start-btn" onclick="startFromWelcome()" class="btn btn-start-big" disabled>
+                🚀 Start Game!
+            </button>
+        </div>
+    </div>
+
+    <div id="game-wrapper" style="display:none;">
+        <div class="game-container">
+            <svg class="info-icon" onclick="showAuthorInfo()" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                    d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+            <h1 class="game-title">Angry Birds Bricks</h1>
+
+            <div class="info-panel">
+                <div class="stat">⏱ Time: <span id="time">00:00</span></div>
+                <div class="stat">🏆 Score: <span id="score">0</span></div>
+                <div class="stat gold-stat">💰 Gold: <span id="gold">0</span></div>
+                <div class="stat">🎯 Mode: <span id="diff-label">-</span></div>
+            </div>
+
+            <div class="legend-bar">
+                <span class="legend-title">Legend:</span>
+                <div class="legend-item">
+                    <img src="assets/pigs.png" class="pig-img-sm"> <span>❤️ 1x</span>
+                </div>
+                <div class="legend-item">
+                    <img src="assets/pigs.png" class="pig-img-sm"
+                        style="filter: brightness(0.45) sepia(1) hue-rotate(100deg);"> <span>❤️ 2x</span>
+                </div>
+                <div class="legend-item">
+                    <img src="assets/pigs.png" class="pig-img-sm"
+                        style="filter: hue-rotate(250deg) saturate(2.5) brightness(1.1);"> <span>❤️ 3x</span>
+                </div>
+            </div>
+
+            <canvas id="canvas" width="600" height="500"></canvas>
+
+            <div class="controls">
+                <button id="start-btn" onclick="startGame()" class="btn btn-easy" disabled>▶ Start</button>
+                <button onclick="pauseGame()" class="btn btn-medium">⏸ Pause</button>
+                <button onclick="resetGame()" class="btn btn-hard">↺ Reset</button>
+            </div>
+
+            <div class="shop">
+                <h3>🛒 Upgrade Shop</h3>
+                <div class="shop-controls">
+                    <button id="btn-fireball" class="btn shop-btn">🔥 Fireball (30G)</button>
+                    <button id="btn-mirror" class="btn shop-btn">🪞 Mirror (100G)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h1 id="end-title">Game Over!</h1>
+            <div class="modal-stats">
+                <p>⏱ Time: <span id="end-time">00:00</span></p>
+                <p>🏆 Score: <span id="end-score">0</span></p>
+                <p>⭐ High Score: <span id="end-record">0</span></p>
+            </div>
+            <button onclick="continueToMenu()" class="btn btn-start-big">Continue to Level Selection</button>
+        </div>
+    </div>
+    <div id="author-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content" style="max-width: 350px;">
+            <h2 style="color: #fff; text-shadow: 2px 2px 0 #8b5a2b; margin-bottom: 15px;">Credits</h2>
+            <div class="modal-stats" style="margin-bottom: 20px;">
+                <p><strong>Author:</strong> Himzo Čaušević</p>
+            </div>
+            <button onclick="closeAuthorInfo()" class="btn btn-medium">Zapri</button>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
