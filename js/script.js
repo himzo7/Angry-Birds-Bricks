@@ -33,8 +33,8 @@ var BRICKWIDTH;
 var BRICKHEIGHT = 35;
 var PADDING = 10;
 
-var hitCooldown = 0;
-var HIT_COOLDOWN_MAX = 15;
+var lastHitRow = -1;
+var lastHitCol = -1;
 
 var bird = new Image();
 bird.src = "https://cdn-icons-png.flaticon.com/512/528/528076.png";
@@ -80,7 +80,8 @@ function init() {
     dy = -5;
     score = 0;
     seconds = 0;
-    hitCooldown = 0;
+    lastHitRow = -1;
+    lastHitCol = -1;
     document.getElementById("score").innerHTML = score;
     document.getElementById("time").innerHTML = "00:00";
     document.getElementById("highscore").innerHTML = highscore;
@@ -207,10 +208,6 @@ function drawPigs() {
 }
 
 function checkCollision() {
-    if (hitCooldown > 0) {
-        hitCooldown--;
-        return;
-    }
     var rowheight = BRICKHEIGHT + PADDING;
     var colwidth = BRICKWIDTH + PADDING;
     var row = Math.floor((y - 50) / rowheight);
@@ -223,13 +220,20 @@ function checkCollision() {
         col < NCOLS &&
         pigs[row][col] > 0
     ) {
+        if (row == lastHitRow && col == lastHitCol) {
+            return;
+        }
         dy = -dy;
         pigs[row][col]--;
-        hitCooldown = HIT_COOLDOWN_MAX;
+        lastHitRow = row;
+        lastHitCol = col;
         if (pigs[row][col] == 0) {
             score += 10;
             document.getElementById("score").innerHTML = score;
         }
+    } else {
+        lastHitRow = -1;
+        lastHitCol = -1;
     }
 }
 
